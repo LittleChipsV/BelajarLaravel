@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BerhitungController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,5 @@ Route::get('/', function () {
 Route::get('/tes', function () {
     return view('tes');
 });
+
+Route::get('/hitung', [BerhitungController::class, 'hitung']);
