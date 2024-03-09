@@ -6,6 +6,6 @@
     <title>Belajar Laravel</title>
 </head>
 <body>
-    <h1 align="center">Halo! Nama saya Andika</h1>
+    <p align="center">Halo! Nama saya Andika</p>
 </body>
 </html>

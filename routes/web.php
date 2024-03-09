@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerhitungController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PelangganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +25,5 @@ Route::get('/tes', function () {
 });
 
 Route::get('/hitung', [BerhitungController::class, 'hitung']);
+Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/pelanggan', [PelangganController::class, 'index']);
