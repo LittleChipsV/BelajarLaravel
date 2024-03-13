@@ -9,7 +9,7 @@ class ControllerTopik extends Controller
 {
     public function index() {
         $data_topik = DB::table('tabel_topik')
-        ->select('tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
+        ->select('tabel_topik.id_topik', 'tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
         ->join('tabel_mata_pelajaran', 'tabel_topik.id_topik', '=', 'tabel_mata_pelajaran.id_mapel')
         ->get();
 
