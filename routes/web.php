@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerhitungController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\ControllerGuru;
+use App\Http\Controllers\ControllerSiswa;
+use App\Http\Controllers\ControllerMataPelajaran;
+use App\Http\Controllers\ControllerNilai;
+use App\Http\Controllers\ControllerKelas;
+use App\Http\Controllers\ControllerTopik;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +32,17 @@ Route::get('/tes', function () {
 
 Route::get('/hitung', [BerhitungController::class, 'hitung']);
 Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/pelanggan', [PelangganController::class, 'index']);
+
+Route::get('/siswa', [ControllerSiswa::class, 'index']);
+Route::get('/guru', [ControllerGuru::class, 'index']);
+Route::get('/kelas', [ControllerKelas::class, 'index']);
+Route::get('/nilai', [ControllerNilai::class, 'index']);
+Route::get('/mapel', [ControllerMataPelajaran::class, 'index']);
+Route::get('/topik', [ControllerTopik::class, 'index']);
+
+Route::get('/tambahsiswa', [ControllerSiswa::class, 'tambahSiswa']);
+Route::get('/tambahguru', [ControllerGuru::class, 'tambahGuru']);
+Route::get('/tambahkelas', [ControllerKelas::class, 'tambahKelas']);
+Route::get('/tambahnilai', [ControllerNilai::class, 'tambahNilai']);
+Route::get('/tambahmapel', [ControllerMataPelajaran::class, 'tambahMapel']);
+Route::get('/tambahtopik', [ControllerTopik::class, 'tambahTopik']);
