@@ -12,10 +12,30 @@ Data Siswa
                 <th scope="col">No</th>
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Jenis Kelamin</th>
+                <th scope="col">Kelas</th>
             </tr>
         </thead>
         <tbody>
+            @forelse ($data_siswa as $key => $value)
+            <tr>
+                <th scope="row">{{$key + 1}}</th>
+                <td>{{$value->nama_siswa}}</td>
+                <td>{{ $value->jenis_kelamin}}</td>
+                <td>{{ $value->nama_kelas}}</td>
+                    <td class="mr-3">
+                    <a href="/siswa/{{$value->id_siswa}}" class="btn btn-info">Show </a>
+                    <a href="/siswa/{{$value->id_siswa}}/edit" class="btn btnsuccess">Edit</a>
+                    <a href="/siswa/ {{$value->id_siswa }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                </td>
+            </div>
+            </tr>
+        {{--tidak ada data --}}
         </tbody>
+            @empty
+            <tr colspan="6">
+                <td>No data</td>
+            </tr>
+            @endforelse
     </table>
 </div>
 @endsection

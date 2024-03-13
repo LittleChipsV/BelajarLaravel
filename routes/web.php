@@ -31,7 +31,6 @@ Route::get('/tes', function () {
 });
 
 Route::get('/hitung', [BerhitungController::class, 'hitung']);
-Route::get('/dashboard', [DashboardController::class, 'index']);
 
 Route::get('/siswa', [ControllerSiswa::class, 'index']);
 Route::get('/guru', [ControllerGuru::class, 'index']);
@@ -39,6 +38,13 @@ Route::get('/kelas', [ControllerKelas::class, 'index']);
 Route::get('/nilai', [ControllerNilai::class, 'index']);
 Route::get('/mapel', [ControllerMataPelajaran::class, 'index']);
 Route::get('/topik', [ControllerTopik::class, 'index']);
+
+Route::post('/siswa', [ControllerSiswa::class, 'siswa']);
+Route::post('/guru', [ControllerGuru::class, 'guru']);
+Route::post('/kelas', [ControllerKelas::class, 'kelas']);
+Route::post('/nilai', [ControllerNilai::class, 'nilai']);
+Route::post('/mapel', [ControllerMataPelajaran::class, 'mapel']);
+Route::post('/topik', [ControllerTopik::class, 'topik']);
 
 Route::get('/tambahsiswa', [ControllerSiswa::class, 'tambahSiswa']);
 Route::get('/tambahguru', [ControllerGuru::class, 'tambahGuru']);

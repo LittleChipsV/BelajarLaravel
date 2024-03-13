@@ -5,25 +5,38 @@
         @csrf
         <div class="form-group p-3">
             <label>Nilai </label>
-            <input type="number" name='nilai' class="form-control" placeholder="Masukan Nilai">
-            @error('nilai')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+                <input type="number" name='nilai' class="form-control" >
+                @error('nilai')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
         </div>
+
         <div class="form-group p-3">
             <label>Nama Siswa </label>
-            <input type="text" name='nama_siswa' class="form-control" placeholder="Masukan Nama Siswa">
-            @error('nama_siswa')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <select name="id_siswa" id="daftar_siswa">
+                @forelse($daftar_siswa as $siswa)
+                    <option value="{{ $siswa->id_siswa }}">{{ $siswa->nama_siswa }}</option>
+                @empty
+                    <option value="" disabled>Belum ada siswa</option>
+                @endforelse
+            </select>
+        @error('id_siswa')
+        <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+
         <div class="form-group p-3">
-            <label>Nama Topik </label>
-            <input type="text" name='nama_topik' class="form-control" placeholder="Masukan Nama Topik">
-            @error('nama_topik')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-        </div>
+            <label>Topik </label>
+            <select name="id_topik" id="daftar_topik">
+                @forelse($daftar_topik as $topik)
+                    <option value="{{ $topik->id_topik }}">{{ $topik->nama_topik }} | {{ $topik->nama_guru }}</option>
+                @empty
+                    <option value="" disabled>Belum ada Topik</option>
+                @endforelse
+            </select>
+        @error('id_topik')
+        <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="p-3">
         <button type="submit" class="btn btn-primary ">Submit</button>
     </div>

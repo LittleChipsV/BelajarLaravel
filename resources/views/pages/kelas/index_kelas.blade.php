@@ -14,7 +14,24 @@ Data Kelas
             </tr>
         </thead>
         <tbody>
+            @forelse ($data_kelas as $key => $value)
+            <tr>
+                <th scope="row">{{$key + 1}}</th>
+                <td>{{$value->nama_kelas}}</td>
+                <td class="mr-3">
+                    <a href="/kelas/{{$value->id_kelas}}" class="btn btn-info">Show </a>
+                    <a href="/kelas/{{$value->id_kelas}}/edit" class="btn btnsuccess">Edit</a>
+                    <a href="/kelas/ {{$value->id_kelas }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                </td>
+            </div>
+            </tr>
+        {{--tidak ada data --}}
         </tbody>
+            @empty
+            <tr colspan="6">
+                <td>No data</td>
+            </tr>
+            @endforelse
     </table>
 </div>
 @endsection

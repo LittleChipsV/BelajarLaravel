@@ -12,8 +12,14 @@
         </div>
         <div class="form-group p-3">
             <label>Nama Guru Pengampu </label>
-            <input type="text" name='nama_guru' class="form-control" placeholder="Masukan Nama Guru Pengampu">
-            @error('guru_pengampu')
+            <select name="id_guru" id="daftar_guru">
+                @forelse($daftar_guru as $guru)
+                    <option value="{{ $guru->id_guru }}">{{ $guru->nama_guru }}</option>
+                @empty
+                    <option value="" disabled>Belum ada guru</option>
+                @endforelse
+            </select>
+            @error('id_guru')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>

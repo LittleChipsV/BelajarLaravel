@@ -15,7 +15,25 @@ Data Mata Pelajaran
             </tr>
         </thead>
         <tbody>
+            @forelse ($data_mapel as $key => $value)
+            <tr>
+                <th scope="row">{{$key + 1}}</th>
+                <td>{{$value->nama_mapel}}</td>
+                <td>{{ $value->nama_guru}}</td>
+                    <td class="mr-3">
+                    <a href="/matapelajaran/{{$value->id_mapel}}" class="btn btn-info">Show </a>
+                    <a href="/matapelajaran/{{$value->id_mapel}}/edit" class="btn btnsuccess">Edit</a>
+                    <a href="/matapelajaran/ {{$value->id_mapel }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                </td>
+            </div>
+            </tr>
+        {{--tidak ada data --}}
         </tbody>
+            @empty
+            <tr colspan="6">
+                <td>No data</td>
+            </tr>
+            @endforelse
     </table>
 </div>
 @endsection

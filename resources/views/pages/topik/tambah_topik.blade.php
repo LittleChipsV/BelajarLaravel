@@ -11,11 +11,14 @@
             @enderror
         </div>
         <div class="form-group p-3">
-            <label>Nama Mata Pelajaran </label>
-            <input type="text" name='nama_mapel' class="form-control" placeholder="Masukan Nama Mata Pelajaran">
-            @error('nama_mapel')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            <label>Mata pelajaran </label>
+            <select name="id_mapel" id="daftar_mapel">
+                @forelse($daftar_mapel as $mapel)
+                    <option value="{{ $mapel->id_mapel }}">{{ $mapel->nama_mapel }}</option>
+                @empty
+                    <option value="" disabled>Belum ada mata pelajaran</option>
+                @endforelse
+            </select>
         </div>
         <div class="p-3">
         <button type="submit" class="btn btn-primary ">Submit</button>

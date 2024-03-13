@@ -3,14 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ControllerMataPelajaran extends Controller
 {
     public function index() {
-        return view('pages.matapelajaran.index_mapel');
+        $data_mapel = DB::table('tabel_mata_pelajaran')
+        ->select('tabel_mata_pelajaran.*', 'tabel_guru.nama_guru')
+        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
+        ->get();
+
+        return view('pages.matapelajaran.index_mapel', compact('data_mapel'));
     }
 
     public function tambahMapel() {
-        return view('pages.matapelajaran.tambah_mapel');
+        $daftar_guru = DB::table('tabel_guru')->select('id_guru', 'nama_guru')->get();
+
+        return view('pages.matapelajaran.tambah_mapel', compact('daftar_guru'));
+    }
+
+    public function mapel(Request $request){
+        $request->validate([
+            'nama_mapel' => 'required|',
+            'id_guru' => 'required|exists:tabel_guru,id_guru'
+        ]);
+
+        DB::table('tabel_mata_pelajaran')->insert([
+            'nama_mapel' => $request->nama_mapel,
+            'id_guru' => $request->id_guru
+        ]);
+
+        return redirect('/mapel');
     }
 }

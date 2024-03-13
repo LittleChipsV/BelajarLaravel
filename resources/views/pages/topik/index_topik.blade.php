@@ -15,7 +15,25 @@ Data Topik
             </tr>
         </thead>
         <tbody>
+            @forelse ($data_topik as $key => $value)
+            <tr>
+                <th scope="row">{{$key + 1}}</th>
+                <td>{{$value->nama_topik}}</td>
+                <td>{{ $value->nama_mapel}}</td>
+                    <td class="mr-3">
+                    <a href="/topik/{{$value->id_topik}}" class="btn btn-info">Show </a>
+                    <a href="/topik/{{$value->id_topik}}/edit" class="btn btnsuccess">Edit</a>
+                    <a href="/topik/ {{$value->id_topik }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                </td>
+            </div>
+            </tr>
+        {{--tidak ada data --}}
         </tbody>
+            @empty
+            <tr colspan="6">
+                <td>No data</td>
+            </tr>
+            @endforelse
     </table>
 </div>
 @endsection

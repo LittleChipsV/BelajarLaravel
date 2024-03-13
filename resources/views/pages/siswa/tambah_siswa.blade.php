@@ -12,10 +12,13 @@
         </div>
         <div class="form-group p-3">
             <label>Kelas </label>
-            <input type="text" name='nama_kelas' class="form-control" placeholder="Masukan Nama Kelas">
-            @error('nama_kelas')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            <select name="id_kelas" id="daftar_kelas">
+                @forelse ($daftar_kelas as $kelas)
+                    <option value="{{ $kelas->id_kelas }}">{{ $kelas->nama_kelas }}</option>
+                @empty
+                    <option value="" disabled>Belum ada kelas</option>
+                @endforelse
+            </select>
         </div>
         <div class="form-group p-3">
             <label>Jenis Kelamin</label>

@@ -17,7 +17,27 @@ Data Nilai
             </tr>
         </thead>
         <tbody>
+            @forelse ($data_nilai as $key => $value)
+            <tr>
+                <th scope="row">{{$key + 1}}</th>
+                <td>{{$value->nama_siswa}}</td>
+                <td>{{$value->nama_mapel}}</td>
+                <td>{{$value->nama_topik}}</td>
+                <td>{{$value->nilai}}</td>
+                    <td class="mr-3">
+                    <a href="/nilai/{{$value->id_nilai}}" class="btn btn-info">Show </a>
+                    <a href="/nilai/{{$value->id_nilai}}/edit" class="btn btnsuccess">Edit</a>
+                    <a href="/nilai/{{$value->id_nilai }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                </td>
+            </div>
+            </tr>
+        {{--tidak ada data --}}
         </tbody>
+            @empty
+            <tr colspan="6">
+                <td>No data</td>
+            </tr>
+            @endforelse
     </table>
 </div>
 @endsection
