@@ -10,7 +10,7 @@ class ControllerTopik extends Controller
     public function index() {
         $data_topik = DB::table('tabel_topik')
         ->select('tabel_topik.id_topik', 'tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
-        ->join('tabel_mata_pelajaran', 'tabel_topik.id_topik', '=', 'tabel_mata_pelajaran.id_mapel')
+        ->join('tabel_mata_pelajaran', 'tabel_topik.id_mapel', '=', 'tabel_mata_pelajaran.id_mapel')
         ->get();
 
         return view('pages.topik.index_topik', compact('data_topik'));
@@ -33,6 +33,6 @@ class ControllerTopik extends Controller
             'id_mapel' => $request->id_mapel
         ]);
 
-        return redirect('/mapel');
+        return redirect('/topik');
     }
 }
