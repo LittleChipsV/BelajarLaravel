@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ControllerMataPelajaran extends Controller
 {
@@ -33,6 +34,17 @@ class ControllerMataPelajaran extends Controller
             'id_guru' => $request->id_guru
         ]);
 
+        Alert::success("Sukses!", "Berhasil menambah data");
         return redirect('/mapel');
+    }
+
+    public function show($id){
+        $data = DB::table('tabel_mata_pelajaran')
+        ->select('tabel_mata_pelajaran.*', 'tabel_guru.nama_guru')
+        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
+        ->where('id_mapel', $id)
+        ->first();
+
+        return view('pages.matapelajaran.detail_mapel', compact('data'));
     }
 }

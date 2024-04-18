@@ -24,8 +24,8 @@ Data Siswa
                 <td>{{ $value->nama_kelas}}</td>
                     <td class="mr-3">
                     <a href="/siswa/{{$value->id_siswa}}" class="btn btn-info">Show </a>
-                    <a href="/siswa/{{$value->id_siswa}}/edit" class="btn btnsuccess">Edit</a>
-                    <a href="/siswa/ {{$value->id_siswa }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                    <a href="/siswa/{{$value->id_siswa}}/edit" class="btn btn-success">Edit</a>
+                    <a href="/siswa/{{$value->id_siswa }}" class="btn btn-danger" data-confirm-delete="true">Delete</a>
                 </td>
             </div>
             </tr>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ControllerNilai extends Controller
 {
@@ -43,6 +44,20 @@ class ControllerNilai extends Controller
             'id_topik' => $request->id_topik
         ]);
 
+        Alert::success("Sukses!", "Berhasil menambah data");
         return redirect('/nilai');
+    }
+
+    public function show($id){
+        $data = DB::table('tabel_nilai')
+        ->select('tabel_nilai.nilai', 'tabel_nilai.id_nilai', 'tabel_siswa.nama_siswa', 'tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
+        ->join('tabel_siswa', 'tabel_nilai.id_siswa', '=', 'tabel_siswa.id_siswa')
+        ->join('tabel_topik', 'tabel_nilai.id_topik', '=', 'tabel_topik.id_topik')
+        ->join('tabel_mata_pelajaran', 'tabel_topik.id_mapel', '=', 'tabel_mata_pelajaran.id_mapel')
+        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
+        ->where('id_nilai', $id)
+        ->first();
+
+        return view('pages.nilai.detail_nilai', compact('data'));
     }
 }

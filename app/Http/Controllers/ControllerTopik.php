@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ControllerTopik extends Controller
 {
@@ -33,6 +34,16 @@ class ControllerTopik extends Controller
             'id_mapel' => $request->id_mapel
         ]);
 
+        Alert::success("Sukses!", "Berhasil menambah data");
         return redirect('/topik');
+    }
+
+    public function show($id){
+        $data = DB::table('tabel_topik')
+        ->select('tabel_topik.id_topik', 'tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
+        ->join('tabel_mata_pelajaran', 'tabel_topik.id_mapel', '=', 'tabel_mata_pelajaran.id_mapel')
+        ->first();
+
+        return view('pages.topik.detail_topik', compact('data'));
     }
 }

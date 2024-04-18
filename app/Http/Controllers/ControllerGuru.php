@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ControllerGuru extends Controller
 {
@@ -14,7 +15,9 @@ class ControllerGuru extends Controller
     }
 
     public function tambahGuru() {
-        return view('pages.guru.tambah_guru');
+        $daftar_guru = DB::table('tabel_guru')->pluck('nama_guru');
+
+        return view('pages.guru.tambah_guru', compact('daftar_guru'));
     }
 
     public function guru(Request $request){
@@ -28,6 +31,12 @@ class ControllerGuru extends Controller
             'jenis_kelamin' => $request->jenis_kelamin
         ]);
 
+        Alert::success("Sukses!", "Berhasil menambah data");
         return redirect('/guru');
+    }
+
+    public function show($id){
+        $data = DB::table('tabel_guru')->where('id_guru', $id)->first();
+        return view('pages.guru.detail_guru', compact('data'));
     }
 }

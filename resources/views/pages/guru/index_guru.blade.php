@@ -22,8 +22,8 @@ Data Guru
                 <td>{{ $value->jenis_kelamin}}</td>
                     <td class="mr-3">
                     <a href="/guru/{{$value->id_guru}}" class="btn btn-info">Show </a>
-                    <a href="/guru/{{$value->id_guru}}/edit" class="btn btnsuccess">Edit</a>
-                    <a href="/guru/ {{$value->id_guru }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                    <a href="/guru/{{$value->id_guru}}/edit" class="btn btn-success">Edit</a>
+                    <a href="/guru/ {{$value->id_guru }}" class="btn btn-danger" data-confirm-delete="true">Delete</a>
                 </td>
             </div>
             </tr>

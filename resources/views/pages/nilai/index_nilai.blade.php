@@ -26,8 +26,8 @@ Data Nilai
                 <td>{{$value->nilai}}</td>
                     <td class="mr-3">
                     <a href="/nilai/{{$value->id_nilai}}" class="btn btn-info">Show </a>
-                    <a href="/nilai/{{$value->id_nilai}}/edit" class="btn btnsuccess">Edit</a>
-                    <a href="/nilai/{{$value->id_nilai }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                    <a href="/nilai/{{$value->id_nilai}}/edit" class="btn btn-success">Edit</a>
+                    <a href="/nilai/{{$value->id_nilai }}" class="btn btn-danger" data-confirm-delete="true">Delete</a>
                 </td>
             </div>
             </tr>

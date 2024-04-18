@@ -36,8 +36,8 @@
                 <!-- End of Topbar -->
 
                 <div class="container-fluid">
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">@yield('judul')</h1>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-2">
+                        <h1 class="h2 mb-0 text-gray-800">@yield('judul')</h1>
                     </div>
                 </div>
 
@@ -88,5 +88,5 @@
     @include('includes.script')
 
 </body>
-
+@include('sweetalert::alert')
 </html>

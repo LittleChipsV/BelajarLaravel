@@ -20,8 +20,8 @@ Data Kelas
                 <td>{{$value->nama_kelas}}</td>
                 <td class="mr-3">
                     <a href="/kelas/{{$value->id_kelas}}" class="btn btn-info">Show </a>
-                    <a href="/kelas/{{$value->id_kelas}}/edit" class="btn btnsuccess">Edit</a>
-                    <a href="/kelas/ {{$value->id_kelas }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                    <a href="/kelas/{{$value->id_kelas}}/edit" class="btn btn-success">Edit</a>
+                    <a href="/kelas/ {{$value->id_kelas }}" class="btn btn-danger" data-confirm-delete="true">Delete</a>
                 </td>
             </div>
             </tr>

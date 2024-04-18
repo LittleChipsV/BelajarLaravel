@@ -22,8 +22,8 @@ Data Topik
                 <td>{{ $value->nama_mapel}}</td>
                     <td class="mr-3">
                     <a href="/topik/{{$value->id_topik}}" class="btn btn-info">Show </a>
-                    <a href="/topik/{{$value->id_topik}}/edit" class="btn btnsuccess">Edit</a>
-                    <a href="/topik/ {{$value->id_topik }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                    <a href="/topik/{{$value->id_topik}}/edit" class="btn btn-success">Edit</a>
+                    <a href="/topik/{{$value->id_topik }}" class="btn btn-danger" data-confirm-delete="true">Delete</a>
                 </td>
             </div>
             </tr>

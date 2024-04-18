@@ -52,3 +52,10 @@ Route::get('/tambahkelas', [ControllerKelas::class, 'tambahKelas']);
 Route::get('/tambahnilai', [ControllerNilai::class, 'tambahNilai']);
 Route::get('/tambahmapel', [ControllerMataPelajaran::class, 'tambahMapel']);
 Route::get('/tambahtopik', [ControllerTopik::class, 'tambahTopik']);
+
+Route::get('/siswa/{id}', [ControllerSiswa::class, 'show']);
+Route::get('/guru/{id}', [ControllerGuru::class, 'show']);
+Route::get('/kelas/{id}', [ControllerKelas::class, 'show']);
+Route::get('/nilai/{id}', [ControllerNilai::class, 'show']);
+Route::get('/mapel/{id}', [ControllerMataPelajaran::class, 'show']);
+Route::get('/topik/{id}', [ControllerTopik::class, 'show']);

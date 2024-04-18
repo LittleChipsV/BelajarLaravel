@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ControllerSiswa extends Controller
 {
@@ -35,6 +36,17 @@ class ControllerSiswa extends Controller
             'id_kelas' => $request->id_kelas
         ]);
 
+        Alert::success("Sukses!", "Berhasil menambah data");
         return redirect('/siswa');
+    }
+
+    public function show($id){
+        $data = DB::table('tabel_siswa')
+        ->select('tabel_siswa.*', 'tabel_kelas.nama_kelas')
+        ->join('tabel_kelas', 'tabel_siswa.id_kelas', '=', 'tabel_kelas.id_kelas')
+        ->where('id_siswa', $id)
+        ->first();
+
+        return view('pages.siswa.detail_siswa', compact('data'));
     }
 }

@@ -21,9 +21,9 @@ Data Mata Pelajaran
                 <td>{{$value->nama_mapel}}</td>
                 <td>{{ $value->nama_guru}}</td>
                     <td class="mr-3">
-                    <a href="/matapelajaran/{{$value->id_mapel}}" class="btn btn-info">Show </a>
-                    <a href="/matapelajaran/{{$value->id_mapel}}/edit" class="btn btnsuccess">Edit</a>
-                    <a href="/matapelajaran/ {{$value->id_mapel }}" class="btn btndanger" data-confirm-delete="true">Delete</a>
+                    <a href="/mapel/{{$value->id_mapel}}" class="btn btn-info">Show </a>
+                    <a href="/mapel/{{$value->id_mapel}}/edit" class="btn btn-success">Edit</a>
+                    <a href="/mapel/{{$value->id_mapel }}" class="btn btn-danger" data-confirm-delete="true">Delete</a>
                 </td>
             </div>
             </tr>
