@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    BerhitungController, 
-    DashboardController, 
+    BerhitungController,
+    DashboardController,
     PelangganController,
     ControllerGuru,
     ControllerSiswa,
@@ -25,7 +25,7 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
 Route::get('/tes', function () {
