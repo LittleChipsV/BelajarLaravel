@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tabel_topik', function (Blueprint $table) {
-            $table->id('id_topik');
+            $table->id();
             $table->string('nama_topik');
-            $table->foreignId('id_mapel')->references('id_mapel')->on('tabel_mata_pelajaran')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_mata_pelajaran')->references('id')->on('tabel_mata_pelajaran')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

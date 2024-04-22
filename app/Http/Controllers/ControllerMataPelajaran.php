@@ -3,48 +3,76 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\QueryException;
+use App\Models\MataPelajaran;
 
 class ControllerMataPelajaran extends Controller
 {
-    public function index() {
-        $data_mapel = DB::table('tabel_mata_pelajaran')
-        ->select('tabel_mata_pelajaran.*', 'tabel_guru.nama_guru')
-        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
-        ->get();
+    public function index(){
+        confirmDelete("Hapus Mata Pelajaran", "Apakah kamu yakin ingin menghapus data ini?");
 
-        return view('pages.matapelajaran.index_mapel', compact('data_mapel'));
+        return view('pages.mata-pelajaran.index', ['daftar_mata_pelajaran' => MataPelajaran::all()]);
     }
 
-    public function tambahMapel() {
-        $daftar_guru = DB::table('tabel_guru')->select('id_guru', 'nama_guru')->get();
 
-        return view('pages.matapelajaran.tambah_mapel', compact('daftar_guru'));
+    // ==== CREATE ====
+    public function create(){
+        return view('pages.mata-pelajaran.tambah');
     }
 
-    public function mapel(Request $request){
-        $request->validate([
-            'nama_mapel' => 'required|',
-            'id_guru' => 'required|exists:tabel_guru,id_guru'
+    public function store(Request $request){
+        $data = $request->validate([
+            'nama_mata_pelajaran' => 'required|string|max:255|unique:tabel_mata_pelajaran'
         ]);
 
-        DB::table('tabel_mata_pelajaran')->insert([
-            'nama_mapel' => $request->nama_mapel,
-            'id_guru' => $request->id_guru
-        ]);
-
-        Alert::success("Sukses!", "Berhasil menambah data");
-        return redirect('/mapel');
+        try {
+            MataPelajaran::create($data);
+            Alert::success("Sukses!", "Data mata pelajaran berhasil ditambah");
+            return redirect('/mata-pelajaran');
+        } catch (QueryException $ex) {
+            Alert::error('Terjadi kesalahan', $ex->errorInfo[1] === 1062 ? 'Data sudah pernah ditambahkan' : $ex->getMessage());
+            return redirect()->back();
+        }
     }
 
-    public function show($id){
-        $data = DB::table('tabel_mata_pelajaran')
-        ->select('tabel_mata_pelajaran.*', 'tabel_guru.nama_guru')
-        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
-        ->where('id_mapel', $id)
-        ->first();
 
-        return view('pages.matapelajaran.detail_mapel', compact('data'));
+    // ==== READ ====
+    public function show(MataPelajaran $mataPelajaran){
+        return view('pages.mata-pelajaran.detail', ['mata_pelajaran' => $mataPelajaran]);
+    }
+
+
+     //==== UPDATE ====
+     public function edit(MataPelajaran $mataPelajaran){
+        return view('pages.mata-pelajaran.edit', ['mata_pelajaran' => $mataPelajaran]);
+    }
+
+    public function update(Request $request, MataPelajaran $mataPelajaran){
+        $data = $request->validate([
+            'nama_mata_pelajaran' => 'required|string|max:255|unique:tabel_mata_pelajaran'
+        ]);
+
+        try {
+            $mataPelajaran->update($data);
+            Alert::success('Sukses!', 'Data mata pelajaran berhasil diperbarui');
+            return redirect('/mata-pelajaran');
+        } catch (QueryException $ex) {
+            Alert::error('Terjadi kesalahan', $ex->errorInfo[1] === 1062 ? 'Data duplikat dengan data lain' : $ex->getMessage());
+            return redirect()->back();
+        }
+    }
+
+
+     // ==== DELETE ====
+     public function destroy(MataPelajaran $mataPelajaran){
+        try{
+            $mataPelajaran->delete();
+            Alert::success('Sukses!', 'Data mata pelajaran berhasil dihapus');
+            return redirect('/mata-pelajaran');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->getMessage());
+            return redirect()->back();
+        }
     }
 }

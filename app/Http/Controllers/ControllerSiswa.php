@@ -3,50 +3,80 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\{Siswa, Kelas};
+use Illuminate\Database\QueryException;
 
 class ControllerSiswa extends Controller
 {
-    public function index() {
-        $data_siswa = DB::table('tabel_siswa')
-        ->select('tabel_siswa.*', 'tabel_kelas.nama_kelas')
-        ->join('tabel_kelas', 'tabel_siswa.id_kelas', '=', 'tabel_kelas.id_kelas')
-        ->get();
+    public function index(){
+        confirmDelete("Hapus Siswa", "Apakah kamu yakin ingin menghapus data ini?");
 
-        return view('pages.siswa.index_siswa', compact('data_siswa'));
+        return view('pages.siswa.index', ['daftar_siswa' => Siswa::with('kelas')->get()]);
     }
 
-    public function tambahSiswa() {
-        $daftar_kelas = DB::table('tabel_kelas')->get();
-
-        return view('pages.siswa.tambah_siswa', compact('daftar_kelas'));
+    // ==== CREATE ====
+    public function create() {
+        return view('pages.siswa.tambah', ['daftar_kelas' => Kelas::all()]);
     }
 
-    public function siswa(Request $request){
-        $request->validate([
-            'nama_siswa' => 'required|',
-            'id_kelas' => 'required|',
-            'jenis_kelamin' => 'required|'
+    public function store(Request $request){
+        $data = $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'id_kelas' => 'required|numeric|exists:tabel_kelas,id',
+            'jenis_kelamin' => ['required', 'string', Rule::in(['laki', 'perempuan'])]
         ]);
 
-        DB::table('tabel_siswa')->insert([
-            'nama_siswa' => $request->nama_siswa,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'id_kelas' => $request->id_kelas
-        ]);
-
-        Alert::success("Sukses!", "Berhasil menambah data");
-        return redirect('/siswa');
+        try{
+            Siswa::create($data);
+            Alert::success("Sukses!", "Data siswa berhasil ditambah");
+            return redirect('/siswa');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->getMessage());
+            return redirect()->back();
+        }
     }
 
-    public function show($id){
-        $data = DB::table('tabel_siswa')
-        ->select('tabel_siswa.*', 'tabel_kelas.nama_kelas')
-        ->join('tabel_kelas', 'tabel_siswa.id_kelas', '=', 'tabel_kelas.id_kelas')
-        ->where('id_siswa', $id)
-        ->first();
 
-        return view('pages.siswa.detail_siswa', compact('data'));
+    // ==== READ ====
+    public function show(Siswa $siswa){
+        return view('pages.siswa.detail', compact('siswa'));
+    }
+
+
+     // ==== UPDATE ====
+     public function edit(Siswa $siswa){
+        return view('pages.siswa.edit', ['siswa' => $siswa, 'daftar_kelas' => Kelas::all()]);
+    }
+
+    public function update(Request $request, Siswa $siswa){
+        $data = $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'id_kelas' => 'required|numeric|exists:tabel_kelas,id',
+            'jenis_kelamin' => ['required', 'string', Rule::in(['laki', 'perempuan'])]
+        ]);
+
+        try{
+            $siswa->update($data);
+            Alert::success('Sukses!', 'Data siswa berhasil diperbarui');
+            return redirect('/siswa');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->getMessage());
+            return redirect()->back();
+        }
+    }
+
+
+     // ==== DELETE ====
+     public function destroy(Siswa $siswa){
+        try{
+            $siswa->delete();
+            Alert::success('Sukses!', 'Data siswa berhasil dihapus');
+            return redirect('/siswa');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->getMessage());
+            return redirect()->back();
+        }
     }
 }

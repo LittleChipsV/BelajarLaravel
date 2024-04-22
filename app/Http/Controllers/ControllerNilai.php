@@ -3,61 +3,80 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\QueryException;
+use App\Models\{Nilai, Siswa, Topik};
 
 class ControllerNilai extends Controller
 {
     public function index() {
-        $data_nilai = DB::table('tabel_nilai')
-        ->select('tabel_nilai.nilai', 'tabel_nilai.id_nilai', 'tabel_siswa.nama_siswa', 'tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
-        ->join('tabel_siswa', 'tabel_nilai.id_siswa', '=', 'tabel_siswa.id_siswa')
-        ->join('tabel_topik', 'tabel_nilai.id_topik', '=', 'tabel_topik.id_topik')
-        ->join('tabel_mata_pelajaran', 'tabel_topik.id_mapel', '=', 'tabel_mata_pelajaran.id_mapel')
-        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
-        ->get();
+        confirmDelete("Hapus Nilai", "Apakah kamu yakin ingin menghapus data ini?");
 
-        return view('pages.nilai.index_nilai', compact('data_nilai'));
+        return view('pages.nilai.index', ['daftar_nilai' => Nilai::with(['siswa', 'topik.mataPelajaran'])->get()]);
     }
 
-    public function tambahNilai() {
-        $daftar_siswa = DB::table('tabel_siswa')->get();
-        $daftar_topik = DB::table('tabel_topik')
-        ->select('tabel_topik.*', 'tabel_guru.nama_guru')
-        ->join('tabel_mata_pelajaran', 'tabel_topik.id_mapel', '=', 'tabel_mata_pelajaran.id_mapel')
-        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
-        ->get();
 
-        return view('pages.nilai.tambah_nilai', compact('daftar_siswa', 'daftar_topik'));
+    // ==== CREATE ====
+    public function create() {
+        return view('pages.nilai.tambah', ['daftar_siswa' => Siswa::with('kelas')->get(), 'daftar_topik' => Topik::with('mataPelajaran')->get()]);
     }
 
-    public function nilai(Request $request){
-        $request->validate([
-            'id_siswa' => 'required|',
-            'nilai' => 'required|numeric',
-            'id_topik' => 'required|'
+    public function store(Request $request){
+        $data = $request->validate([
+            'id_siswa' => 'required|numeric|exists:tabel_siswa,id',
+            'nilai' => 'required|numeric|min:0|max:100',
+            'id_topik' => 'required|numeric|exists:tabel_topik,id'
         ]);
 
-        DB::table('tabel_nilai')->insert([
-            'id_siswa' => $request->id_siswa,
-            'nilai' => $request->nilai,
-            'id_topik' => $request->id_topik
-        ]);
-
-        Alert::success("Sukses!", "Berhasil menambah data");
-        return redirect('/nilai');
+        try{
+            Nilai::create($data);
+            Alert::success("Sukses!", "Data nilai berhasil ditambah");
+            return redirect('/nilai');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->errorInfo[1] === 1062 ? 'Data sudah pernah ditambahkan' : $ex->getMessage());
+            return redirect()->back();
+        }
     }
 
-    public function show($id){
-        $data = DB::table('tabel_nilai')
-        ->select('tabel_nilai.nilai', 'tabel_nilai.id_nilai', 'tabel_siswa.nama_siswa', 'tabel_topik.nama_topik', 'tabel_mata_pelajaran.nama_mapel')
-        ->join('tabel_siswa', 'tabel_nilai.id_siswa', '=', 'tabel_siswa.id_siswa')
-        ->join('tabel_topik', 'tabel_nilai.id_topik', '=', 'tabel_topik.id_topik')
-        ->join('tabel_mata_pelajaran', 'tabel_topik.id_mapel', '=', 'tabel_mata_pelajaran.id_mapel')
-        ->join('tabel_guru', 'tabel_mata_pelajaran.id_guru', '=', 'tabel_guru.id_guru')
-        ->where('id_nilai', $id)
-        ->first();
 
-        return view('pages.nilai.detail_nilai', compact('data'));
+    // ==== READ ====
+    public function show(Nilai $nilai){
+        return view('pages.nilai.detail', compact('nilai'));
+    }
+
+
+     // ==== UPDATE ====
+     public function edit(Nilai $nilai){
+        return view('pages.nilai.edit', ['nilai' => $nilai, 'daftar_siswa' => Siswa::with('kelas')->get(), 'daftar_topik' => Topik::with('mataPelajaran')->get()]);
+    }
+
+    public function update(Request $request, Nilai $nilai){
+        $data = $request->validate([
+            'id_siswa' => 'required|numeric|exists:tabel_siswa,id',
+            'nilai' => 'required|numeric|min:0|max:100',
+            'id_topik' => 'required|numeric|exists:tabel_topik,id'
+        ]);
+
+        try{
+            $nilai->update($data);
+            Alert::success('Sukses!', 'Data nilai berhasil diperbarui');
+            return redirect('/nilai');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->errorInfo[1] === 1062 ? 'Data sudah pernah ditambahkan' : $ex->getMessage());
+            return redirect()->back();
+        }
+    }
+
+
+    // ==== DELETE ====
+    public function destroy(Nilai $nilai){
+        try{
+            $nilai->delete();
+            Alert::success('Sukses!', 'Data nilai berhasil dihapus');
+            return redirect('/nilai');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->getMessage());
+            return redirect()->back();
+        }
     }
 }

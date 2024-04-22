@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,7 +12,6 @@
 
     <!-- Custom fonts for this template-->
     @include('includes.style')
-
 </head>
 
 <body id="page-top">
@@ -36,16 +34,15 @@
                 <!-- End of Topbar -->
 
                 <div class="container-fluid">
-                    <div class="d-sm-flex align-items-center justify-content-between mb-2">
-                        <h1 class="h2 mb-0 text-gray-800">@yield('judul')</h1>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h1 class="mb-0 font-weight-bold">@yield('judul')</h1>
                     </div>
+                
+                    <!-- Begin Page Content -->
+                    @yield('content')
+                    @yield('tabel')
+                    <!-- /.container-fluid -->
                 </div>
-
-                <!-- Begin Page Content -->
-                @yield('content')
-                @yield('tabel')
-                <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -65,12 +62,11 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="modalLabel1">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>

@@ -3,36 +3,77 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\Kelas;
+
 
 class ControllerKelas extends Controller
 {
-    public function index() {
-        $data_kelas = DB::table('tabel_kelas')->get();
+    public function index(){
+        confirmDelete("Hapus Kelas", "Apakah kamu yakin ingin menghapus data ini?");
 
-        return view('pages.kelas.index_kelas', compact('data_kelas'));
+        return view('pages.kelas.index', ['daftar_kelas' => Kelas::all()]);
     }
 
-    public function tambahKelas() {
-        return view('pages.kelas.tambah_kelas');
+
+    // ==== CREATE ====
+    public function create(){
+        return view('pages.kelas.tambah');
     }
 
-    public function kelas(Request $request){
-        $request->validate([
-            'nama_kelas' => 'required|',
+    public function store(Request $request){
+        $data = $request->validate([
+            'nama_kelas' => 'required|string|max:255|unique:tabel_kelas'
         ]);
 
-        DB::table('tabel_kelas')->insert([
-            'nama_kelas' => $request->nama_kelas
-        ]);
-
-        Alert::success("Sukses!", "Berhasil menambah data");
-        return redirect('/kelas');
+        try{
+            Kelas::create($data);
+            Alert::success("Sukses!", "Data kelas berhasil ditambah");
+            return redirect('/kelas');
+        }catch (QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->errorInfo[1] === 1062 ? 'Data sudah pernah ditambahkan' : $ex->getMessage());
+            return redirect()->back();
+        }
     }
 
-    public function show($id){
-        $data = DB::table('tabel_kelas')->where('id_kelas', $id)->first();
-        return view('pages.kelas.detail_kelas', compact('data'));
+
+    // ==== READ ====
+    public function show(Kelas $kela){
+        return view('pages.kelas.detail', ['kelas' => $kela]);
+    }
+
+
+    // ==== UPDATE ====
+    public function edit(Kelas $kela){
+        return view('pages.kelas.edit', ['kelas' => $kela]);
+    }
+
+    public function update(Request $request, Kelas $kela){
+        $data = $request->validate([
+            'nama_kelas' => 'required|string|max:255|unique:tabel_kelas'
+        ]);
+
+        try{
+            $kela->update($data);
+            Alert::success('Sukses!', 'Data kelas berhasil diperbarui');
+            return redirect('/kelas');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->errorInfo[1] === 1062 ? 'Data duplikat dengan data lain' : $ex->getMessage());
+            return redirect()->back();
+        }
+    }
+
+
+    // ==== DELETE ====
+    public function destroy(Kelas $kela){
+        try{
+            $kela->delete();
+            Alert::success('Sukses!', 'Data kelas berhasil dihapus');
+            return redirect('/kelas');
+        }catch(QueryException $ex){
+            Alert::error('Terjadi kesalahan', $ex->getMessage());
+            return redirect()->back();
+        }
     }
 }

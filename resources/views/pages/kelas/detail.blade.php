@@ -1,12 +1,11 @@
 @extends('layouts.admin')
 @section('judul', 'Data Kelas')
 @section('content')
-<div class="p-3">
 <div class="card" style="width: 24rem;" >
+    <h2 class="card-header">Kelas ke-{{ $kelas->id }}</h2>
     <div class="card-body">
-        <p>Nama: {{$data->nama_kelas}}<p>
+        <p><b>Nama kelas:</b> {{ $kelas->nama_kelas }}<p>
     </div>
 </div>
-    <a href="/kelas" class="btn btn-primary my-3">Kembali</a>
-</div>
+<a href="/kelas" class="btn btn-primary my-3">Kembali</a>
 @endsection

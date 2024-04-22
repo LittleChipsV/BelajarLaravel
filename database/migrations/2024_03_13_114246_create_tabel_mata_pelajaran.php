@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tabel_mata_pelajaran', function (Blueprint $table) {
-            $table->id('id_mapel');
-            $table->string('nama_mapel');
-            $table->foreignId('id_guru')->references('id_guru')->on('tabel_guru')->onDelete('cascade')->onUpdate('cascade');
+            $table->id();
+            $table->string('nama_mata_pelajaran')->unique();
             $table->timestamps();
         });
     }

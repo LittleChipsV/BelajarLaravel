@@ -14,3 +14,12 @@
 <!-- Page level custom scripts -->
 <script src="{{ asset('sbadmin/js/demo/chart-area-demo.js') }}"></script>
 <script src="{{ asset('sbadmin/js/demo/chart-pie-demo.js') }}"></script>
+
+<script src="{{ asset('sbadmin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('sbadmin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+       $('#dataTable').DataTable();
+     });
+ </script>

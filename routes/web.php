@@ -1,15 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BerhitungController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PelangganController;
-use App\Http\Controllers\ControllerGuru;
-use App\Http\Controllers\ControllerSiswa;
-use App\Http\Controllers\ControllerMataPelajaran;
-use App\Http\Controllers\ControllerNilai;
-use App\Http\Controllers\ControllerKelas;
-use App\Http\Controllers\ControllerTopik;
+use App\Http\Controllers\{
+    BerhitungController, 
+    DashboardController, 
+    PelangganController,
+    ControllerGuru,
+    ControllerSiswa,
+    ControllerMataPelajaran,
+    ControllerNilai,
+    ControllerKelas,
+    ControllerTopik
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,7 @@ use App\Http\Controllers\ControllerTopik;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::get('/tes', function () {
@@ -32,30 +34,55 @@ Route::get('/tes', function () {
 
 Route::get('/hitung', [BerhitungController::class, 'hitung']);
 
-Route::get('/siswa', [ControllerSiswa::class, 'index']);
-Route::get('/guru', [ControllerGuru::class, 'index']);
-Route::get('/kelas', [ControllerKelas::class, 'index']);
-Route::get('/nilai', [ControllerNilai::class, 'index']);
-Route::get('/mapel', [ControllerMataPelajaran::class, 'index']);
-Route::get('/topik', [ControllerTopik::class, 'index']);
+Route::resource('siswa', ControllerSiswa::class);
+Route::resource('guru', ControllerGuru::class);
+Route::resource('kelas', ControllerKelas::class);
+Route::resource('nilai', ControllerNilai::class);
+Route::resource('mata-pelajaran', ControllerMataPelajaran::class);
+Route::resource('topik', ControllerTopik::class);
 
-Route::post('/siswa', [ControllerSiswa::class, 'siswa']);
-Route::post('/guru', [ControllerGuru::class, 'guru']);
-Route::post('/kelas', [ControllerKelas::class, 'kelas']);
-Route::post('/nilai', [ControllerNilai::class, 'nilai']);
-Route::post('/mapel', [ControllerMataPelajaran::class, 'mapel']);
-Route::post('/topik', [ControllerTopik::class, 'topik']);
 
-Route::get('/tambahsiswa', [ControllerSiswa::class, 'tambahSiswa']);
-Route::get('/tambahguru', [ControllerGuru::class, 'tambahGuru']);
-Route::get('/tambahkelas', [ControllerKelas::class, 'tambahKelas']);
-Route::get('/tambahnilai', [ControllerNilai::class, 'tambahNilai']);
-Route::get('/tambahmapel', [ControllerMataPelajaran::class, 'tambahMapel']);
-Route::get('/tambahtopik', [ControllerTopik::class, 'tambahTopik']);
+// Route::get('/siswa', [ControllerSiswa::class, 'index']);
+// Route::get('/guru', [ControllerGuru::class, 'index']);
+// Route::get('/kelas', [ControllerKelas::class, 'index']);
+// Route::get('/nilai', [ControllerNilai::class, 'index']);
+// Route::get('/mapel', [ControllerMataPelajaran::class, 'index']);
+// Route::get('/topik', [ControllerTopik::class, 'index']);
 
-Route::get('/siswa/{id}', [ControllerSiswa::class, 'show']);
-Route::get('/guru/{id}', [ControllerGuru::class, 'show']);
-Route::get('/kelas/{id}', [ControllerKelas::class, 'show']);
-Route::get('/nilai/{id}', [ControllerNilai::class, 'show']);
-Route::get('/mapel/{id}', [ControllerMataPelajaran::class, 'show']);
-Route::get('/topik/{id}', [ControllerTopik::class, 'show']);
+// // Routes buat tambah data (CREATE)
+// Route::get('/tambahsiswa', [ControllerSiswa::class, 'create']);
+// Route::get('/tambahguru', [ControllerGuru::class, 'create']);
+// Route::get('/tambahkelas', [ControllerKelas::class, 'create']);
+// Route::get('/tambahnilai', [ControllerNilai::class, 'create']);
+// Route::get('/tambahmapel', [ControllerMataPelajaran::class, 'create']);
+// Route::get('/tambahtopik', [ControllerTopik::class, 'create']);
+
+// Route::post('/siswa', [ControllerSiswa::class, 'store']);
+// Route::post('/guru', [ControllerGuru::class, 'store']);
+// Route::post('/kelas', [ControllerKelas::class, 'store']);
+// Route::post('/nilai', [ControllerNilai::class, 'store']);
+// Route::post('/mapel', [ControllerMataPelajaran::class, 'store']);
+// Route::post('/topik', [ControllerTopik::class, 'store']);
+
+// // Routes buat read data spesifik (READ)
+// Route::get('/siswa/{id}', [ControllerSiswa::class, 'show']);
+// Route::get('/guru/{id}', [ControllerGuru::class, 'show']);
+// Route::get('/kelas/{id}', [ControllerKelas::class, 'show']);
+// Route::get('/nilai/{id}', [ControllerNilai::class, 'show']);
+// Route::get('/mapel/{id}', [ControllerMataPelajaran::class, 'show']);
+// Route::get('/topik/{id}', [ControllerTopik::class, 'show']);
+
+// // Routes buat update data (UPDATE)
+// Route::get('/siswa/{id}/edit', [ControllerSiswa::class, 'edit']);
+// Route::get('/guru/{id}/edit', [ControllerGuru::class, 'edit']);
+// Route::get('/kelas/{id}/edit', [ControllerKelas::class, 'edit']);
+// Route::get('/nilai/{id}/edit', [ControllerNilai::class, 'edit']);
+// Route::get('/mapel/{id}/edit', [ControllerMataPelajaran::class, 'edit']);
+// Route::get('/topik/{id}/edit', [ControllerTopik::class, 'edit']);
+
+// Route::put('/siswa/{id}', [ControllerSiswa::class, 'update']);
+// Route::put('/guru/{id}', [ControllerGuru::class, 'update']);
+// Route::put('/kelas/{id}', [ControllerKelas::class, 'update']);
+// Route::put('/nilai/{id}', [ControllerNilai::class, 'update']);
+// Route::put('/mapel/{id}', [ControllerMataPelajaran::class, 'update']);
+// Route::put('/topik/{id}', [ControllerTopik::class, 'update']);
