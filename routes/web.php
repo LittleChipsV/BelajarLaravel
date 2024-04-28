@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     BerhitungController,
-    DashboardController,
-    PelangganController,
     ControllerGuru,
     ControllerSiswa,
     ControllerMataPelajaran,
@@ -23,16 +21,22 @@ use App\Http\Controllers\{
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/tes', function () {
     return view('tes');
 });
 
 Route::get('/hitung', [BerhitungController::class, 'hitung']);
+
+
+// ------ Website Penilaian Siswa  --------
+
+Route::get('/', function () {
+    return view('index');
+});
+
+Route::get('/login', function() {
+    return view('login');
+});
 
 Route::resource('siswa', ControllerSiswa::class);
 Route::resource('guru', ControllerGuru::class);
@@ -86,3 +90,7 @@ Route::resource('topik', ControllerTopik::class);
 // Route::put('/nilai/{id}', [ControllerNilai::class, 'update']);
 // Route::put('/mapel/{id}', [ControllerMataPelajaran::class, 'update']);
 // Route::put('/topik/{id}', [ControllerTopik::class, 'update']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
