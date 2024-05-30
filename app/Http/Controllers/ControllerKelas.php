@@ -24,7 +24,7 @@ class ControllerKelas extends Controller
 
     public function store(Request $request){
         $data = $request->validate([
-            'nama_kelas' => 'required|string|max:255|unique:tabel_kelas'
+            'nama_kelas' => 'required|string|max:255|unique:kelas'
         ]);
 
         try{
@@ -51,7 +51,7 @@ class ControllerKelas extends Controller
 
     public function update(Request $request, Kelas $kela){
         $data = $request->validate([
-            'nama_kelas' => 'required|string|max:255|unique:tabel_kelas'
+            'nama_kelas' => 'required|string|max:255|unique:kelas'
         ]);
 
         try{

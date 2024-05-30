@@ -5,20 +5,49 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Database\QueryException;
-use App\Models\{Nilai, Siswa, Topik};
+use App\Models\{Nilai, Topik, User, Siswa, Guru};
+use Illuminate\Support\Facades\Auth;
 
 class ControllerNilai extends Controller
 {
+    public function getSemuaTopikByIdMataPelajaran($idMataPelajaran){
+        $topik = Topik::where('id_mata_pelajaran', $idMataPelajaran)->get();
+
+        return response()->json($topik);
+    }
+
+
     public function index() {
         confirmDelete("Hapus Nilai", "Apakah kamu yakin ingin menghapus data ini?");
+        $userSekarang = auth()->user();
 
-        return view('pages.nilai.index', ['daftar_nilai' => Nilai::with(['siswa', 'topik.mataPelajaran'])->get()]);
+        return view('pages.nilai.index', [
+            'daftar_nilai' => ($userSekarang->role === 'siswa' ?
+                Nilai::with(['siswa.topik.mataPelajaran'])->find($userSekarang->id) :
+                Nilai::with('siswa')->get())
+        ]);
     }
 
 
     // ==== CREATE ====
     public function create() {
-        return view('pages.nilai.tambah', ['daftar_siswa' => Siswa::with('kelas')->get(), 'daftar_topik' => Topik::with('mataPelajaran')->get()]);
+        $user = Auth::user();
+
+        $daftarDataMengampu = Guru::where('id', $user->id)->with('dataMengampu')->first();
+
+        $siswa_kelas = Siswa::where('role', 'siswa')->with('kelas')->get();
+
+        foreach ($siswa_kelas as $siswa){
+            foreach ($siswa->kelas as $kelas){
+                $siswa->kelas = $kelas;
+            }
+        }
+
+        return view('pages.nilai.tambah', [
+            'daftar_siswa' => $siswa_kelas,
+            'daftar_topik' => Topik::with('mataPelajaran')->get(),
+            'daftar_data_mengampu' => $daftarDataMengampu->dataMengampu
+        ]);
     }
 
     public function store(Request $request){
@@ -47,7 +76,11 @@ class ControllerNilai extends Controller
 
      // ==== UPDATE ====
      public function edit(Nilai $nilai){
-        return view('pages.nilai.edit', ['nilai' => $nilai, 'daftar_siswa' => Siswa::with('kelas')->get(), 'daftar_topik' => Topik::with('mataPelajaran')->get()]);
+        return view('pages.nilai.edit', [
+            'nilai' => $nilai,
+            'daftar_siswa' => User::with('siswaKelas')->get(),
+            'daftar_topik' => Topik::with('mataPelajaran')->get()
+        ]);
     }
 
     public function update(Request $request, Nilai $nilai){

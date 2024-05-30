@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tabel_nilai', function (Blueprint $table) {
+        Schema::create('nilai', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('nilai');
-            $table->foreignId('id_siswa')->references('id')->on('tabel_siswa')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_topik')->references('id')->on('tabel_topik')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_siswa')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_topik')->references('id')->on('topik')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->unique(['id_siswa', 'id_topik']);
         });
 
-        DB::statement('ALTER TABLE tabel_nilai ADD CONSTRAINT cek_nilai CHECK (nilai >= 0 AND nilai <= 100)');
+        DB::statement('ALTER TABLE nilai ADD CONSTRAINT cek_nilai CHECK (nilai >= 0 AND nilai <= 100)');
     }
 
     /**
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tabel_nilai');
+        Schema::dropIfExists('nilai');
     }
 };

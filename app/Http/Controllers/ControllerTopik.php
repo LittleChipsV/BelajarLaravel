@@ -5,32 +5,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\{Topik, MataPelajaran};
+use Illuminate\Support\Facades\Auth;
+use App\Models\{Topik, MataPelajaran, Guru};
 
 class ControllerTopik extends Controller
 {
     public function index(){
         confirmDelete("Hapus Topik", "Apakah kamu yakin ingin menghapus data ini?");
 
-        return view('pages.topik.index', ['daftar_topik' => Topik::with('mataPelajaran')->get()]);
+        return view('pages.topik.index', ['daftar_topik' => Topik::with('tupleMataPelajaranKelas')->get()]);
     }
 
 
     // ==== CREATE ====
     public function create() {
-        return view('pages.topik.tambah', ['daftar_mata_pelajaran' => MataPelajaran::all()]);
+        $user = Auth::user();
+
+        $daftarDataMengampu = Guru::where('id', $user->id)->with('dataMengampu')->first();
+
+        return view('pages.topik.tambah', [
+            'daftar_data_mengampu' => $daftarDataMengampu->dataMengampu
+        ]);
     }
 
     public function store(Request $request){
         $data = $request->validate([
-            'nama_topik' => 'required|string|max:255',
-            'id_mata_pelajaran' => 'required|numeric|exists:tabel_mata_pelajaran,id'
+            'nama_topik' => 'bail|required|string|max:255'
         ]);
 
+        if (isset($request['id_tuple_mata_pelajaran_kelas'])) {
+            $request->validate(['id_tuple_mata_pelajaran_kelas' => 'bail|required|numeric|exists:mata_pelajaran_kelas,id']);
+            $data['id_tuple_mata_pelajaran_kelas'] = $request['id_tuple_mata_pelajaran_kelas'];
+        } else {
+            $data['id_tuple_mata_pelajaran_kelas'] = Guru::where('id', auth()->user()->id)->with('dataMengampu')->first()->dataMengampu->first()->id;
+        }
+
+        Topik::create($data);
+        Alert::success("Sukses!", "Data topik berhasil ditambah");
+        return redirect('/topik');
         try{
-            Topik::create($data);
-            Alert::success("Sukses!", "Data topik berhasil ditambah");
-            return redirect('/topik');
         }catch(QueryException $ex){
             Alert::error('Terjadi kesalahan', $ex->getMessage());
             return redirect()->back();

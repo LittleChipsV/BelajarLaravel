@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\{Guru, MataPelajaran};
+use App\Models\{Guru, TupleMataPelajaranKelas};
 use Illuminate\Database\QueryException;
 
 class ControllerGuru extends Controller
@@ -13,27 +13,37 @@ class ControllerGuru extends Controller
     public function index(){
         confirmDelete("Hapus Guru", "Apakah kamu yakin ingin menghapus data ini?");
 
-        return view('pages.guru.index', ['daftar_guru' => Guru::with('mataPelajaran')->get()]);
+        return view('pages.guru.index', ['daftar_guru' => Guru::where('role', 'guru')->with('dataMengampu')->get()]);
     }
 
 
     // ==== CREATE ====
     public function create(){
-        return view('pages.guru.tambah', ['daftar_mata_pelajaran' => MataPelajaran::all()]);
+        return view('pages.guru.tambah', [
+            'daftar_tuple_mata_pelajaran_kelas' => TupleMataPelajaranKelas::all()
+        ]);
     }
 
     public function store(Request $request){
-        $data = $request->validate([
-            'nama_guru' => 'required|string|max:255',
-            'jenis_kelamin' => ['required', 'string', Rule::in(['laki', 'perempuan'])],
-            'id_mata_pelajaran' => 'required|numeric|exists:tabel_mata_pelajaran,id'
-        ]);
+        try {
+            $data = $request->validate([
+                'name' => 'bail|required|string|max:255|min:4',
+                'jenis_kelamin' => 'bail|required|string|in:laki,perempuan',
+                'email' => 'bail|required|string|email|unique:users,email',
+                'password' => 'bail|required|string|min:6|max:255',
+                'id_tuple_mata_pelajaran_kelas' => 'bail|required|array',
+                'id_tuple_mata_pelajaran_kelas.*' => 'bail|numeric|exists:mata_pelajaran_kelas,id'
+            ]);
 
-        try{
-            Guru::create($data);
+            $data['password'] = bcrypt($request['password']);
+            $data['role'] = 'guru';
+
+            $guruBaru = Guru::create($data);
+            $guruBaru->dataMengampu()->sync($data['id_tuple_mata_pelajaran_kelas']);
+
             Alert::success("Sukses!", "Data guru berhasil ditambah");
             return redirect('/guru');
-        }catch(QueryException $ex){
+        } catch(QueryException $ex){
             Alert::error('Terjadi kesalahan', $ex->getMessage());
             return redirect()->back();
         }
@@ -42,30 +52,35 @@ class ControllerGuru extends Controller
 
     // ==== READ ====
     public function show(Guru $guru){
-        return view('pages.guru.detail', ['guru' => $guru->load('mataPelajaran')]);
+        return view('pages.guru.detail', ['guru' => $guru->load('dataMengampu')]);
     }
 
 
     // ==== UPDATE ====
     public function edit(Guru $guru){
-        return view('pages.guru.edit', ['guru' => $guru->load('mataPelajaran'), 'daftar_mata_pelajaran' => MataPelajaran::all()]);
+        return view('pages.guru.edit', [
+            'guru' => $guru->load('dataMengampu'),
+            'daftar_tuple_mata_pelajaran_kelas' => TupleMataPelajaranKelas::with(['mataPelajaran', 'kelas'])->get()
+        ]);
     }
 
     public function update(Request $request, Guru $guru){
         $data = $request->validate([
-            'nama_guru' => 'required|string|max:255',
-            'jenis_kelamin' => ['required', 'string', Rule::in(['laki', 'perempuan'])],
-            'id_mata_pelajaran' => 'required|numeric|exists:tabel_mata_pelajaran,id'
+            'name' => 'required|string|max:255',
+            'jenis_kelamin' => 'bail|required|string|in:laki,perempuan',
+            'email' => ['required', 'string', 'email', Rule::unique('users', 'email')->ignore($guru->id)],
+            'id_tuple_mata_pelajaran_kelas' => 'required|array',
+            'id_tuple_mata_pelajaran_kelas.*' => 'numeric|exists:mata_pelajaran_kelas,id'
         ]);
 
-        try{
-            $guru->update($data);
-            Alert::success('Sukses!', 'Data guru berhasil diperbarui');
-            return redirect('/guru');
-        }catch(QueryException $ex){
-            Alert::error('Terjadi kesalahan', $ex->getMessage());
-            return redirect()->back();
-        }
+        if (!empty($request['password']))
+            $data['password'] = bcrypt($request['password']);
+
+        $guru->update($data);
+        $guru->dataMengampu()->sync($data['id_tuple_mata_pelajaran_kelas']);
+
+        Alert::success('Sukses!', 'Data guru berhasil diperbarui');
+        return redirect('/guru');
     }
 
 

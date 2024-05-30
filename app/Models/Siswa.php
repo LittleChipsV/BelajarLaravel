@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Siswa extends Model
+class Siswa extends User
 {
-    use HasFactory;
-    protected $table = "tabel_siswa";
-    protected $fillable = ["nama_siswa", "jenis_kelamin", "id_kelas"];
+    protected $table = 'users';
 
     public function kelas(){
-        return $this->belongsTo(Kelas::class, "id_kelas");
+        return $this->belongsToMany(Kelas::class, 'siswa_kelas', 'id_siswa', 'id_kelas')->withTimestamps()->as('kelas');
+    }
+
+    public function nilai(){
+        return $this->hasMany(Nilai::class, "id_siswa");
     }
 }

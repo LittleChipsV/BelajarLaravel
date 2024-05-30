@@ -1,7 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <div class="card">
+                <div class="card-header d-flex justify-content-center">
+                    <span class="h2 fw-bold text-center">Reset Password</span>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('password.email') }}">
+                        @csrf
+                        @error('email')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                        <div class="mb-4">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control @error('email')is-invalid @enderror" id="email" name="email" placeholder="Masukkan email" value="{{ old('email') }}" autofocus required />
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary d-grid w-100" type="submit">kirim Link Reset Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -43,5 +72,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection

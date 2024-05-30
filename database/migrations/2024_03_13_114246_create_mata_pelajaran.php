@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tabel_guru', function (Blueprint $table) {
+        Schema::create('mata_pelajaran', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_guru');
-            $table->enum('jenis_kelamin', ['laki', 'perempuan']);
-            $table->foreignId('id_mata_pelajaran')->references('id')->on('tabel_mata_pelajaran')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('nama_mata_pelajaran')->unique();
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tabel_guru');
+        Schema::dropIfExists('mata_pelajaran');
     }
 };

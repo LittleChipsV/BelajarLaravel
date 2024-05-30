@@ -1,7 +1,9 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
-<html
-  lang="en">
-  <head>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>Gemilang: Login</title>
@@ -18,55 +20,59 @@
     <link rel="stylesheet" href="{{ asset('vendor/css/core.css') }}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset('vendor/css/theme-default.css' ) }}" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
-  </head>
 
-  <body>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @vite(['resources/js/app.js'])
+</head>
+<body>
     <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner">
-          <div class="card">
-            <div class="card-header d-flex justify-content-center">
-              <span class="h1 fw-bold text-center">Login</span>
+        <div class="authentication-wrapper authentication-basic container-p-y">
+            <div class="authentication-inner">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-center">
+                        <span class="h1 fw-bold text-center">Login</span>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" class="form-control @error('email')is-invalid @enderror" id="email" name="email" placeholder="Masukkan email" value="{{ old('email') }}" autofocus required />
+                            </div>
+                            @error('email')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                            <div class="mb-3 form-password-toggle">
+                                <div class="d-flex justify-content-between">
+                                    <label class="form-label" for="password">Password</label>
+                                    <a href="{{ route('password.request') }}">
+                                        <small>Lupa Password?</small>
+                                    </a>
+                                </div>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password" class="form-control @error('password')is-invalid @enderror" name="password" placeholder="Masukkan password" value="{{ old('password') }}" aria-describedby="password" required />
+                                    <span class="input-group-text cursor-pointer"><i class="fa-regular fas fa-eye"></i></span>
+                                </div>
+                            </div>
+                            @error('password')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                            <div class="mb-3">
+                                <div class="form-check">
+                                <input {{ old('remember') ? 'checked' : '' }} class="form-check-input" type="checkbox" name="remember" id="remember" />
+                                <label class="form-check-label" for="remember"> Remember Me </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-              <form>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="text" class="form-control" id="email" name="email" placeholder="Massukkan email" autofocus />
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
-                    <a href="auth-forgot-password-basic.html">
-                      <small>Lupa Password?</small>
-                    </a>
-                  </div>
-                  <div class="input-group input-group-merge">
-                    <input type="password" id="password" class="form-control" name="password" placeholder="Masukkan password" aria-describedby="password" />
-                    <span class="input-group-text cursor-pointer"><i class="fa-regular fas fa-eye"></i></span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label" for="remember-me"> Remember Me </label>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
-                </div>
-              </form>
-
-              <!-- <p class="text-center">
-                <span>Belum punya akun? </span>
-                <a href="auth-register-basic.html">
-                  <span>Sign-up</span>
-                </a>
-              </p> -->
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </body>
+</body>
 </html>
+@endsection

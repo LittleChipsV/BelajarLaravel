@@ -23,7 +23,7 @@ class ControllerMataPelajaran extends Controller
 
     public function store(Request $request){
         $data = $request->validate([
-            'nama_mata_pelajaran' => 'required|string|max:255|unique:tabel_mata_pelajaran'
+            'nama_mata_pelajaran' => 'required|string|max:255|unique:mata_pelajaran'
         ]);
 
         try {
@@ -50,7 +50,7 @@ class ControllerMataPelajaran extends Controller
 
     public function update(Request $request, MataPelajaran $mataPelajaran){
         $data = $request->validate([
-            'nama_mata_pelajaran' => 'required|string|max:255|unique:tabel_mata_pelajaran'
+            'nama_mata_pelajaran' => 'required|string|max:255|unique:mata_pelajaran'
         ]);
 
         try {

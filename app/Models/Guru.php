@@ -2,17 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Guru extends Model
+class Guru extends User
 {
-    use HasFactory;
-    protected $table = 'tabel_guru';
-    protected $fillable = ['nama_guru', 'jenis_kelamin', 'id_mata_pelajaran'];
+    protected $table = 'users';
 
-    public function mataPelajaran()
-    {
-        return $this->belongsTo(MataPelajaran::class, 'id_mata_pelajaran');
+    public function dataMengampu(){
+        return $this->belongsToMany(TupleMataPelajaranKelas::class, 'guru_data_mengampu', 'id_guru', 'id_tuple_mata_pelajaran_kelas');
     }
 }

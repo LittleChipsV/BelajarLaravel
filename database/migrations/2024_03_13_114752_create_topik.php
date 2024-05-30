@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tabel_mata_pelajaran', function (Blueprint $table) {
+        Schema::create('topik', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_mata_pelajaran')->unique();
+            $table->string('nama_topik');
+            $table->foreignId('id_tuple_mata_pelajaran_kelas')->references('id')->on('mata_pelajaran_kelas')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tabel_mata_pelajaran');
+        Schema::dropIfExists('topik');
     }
 };

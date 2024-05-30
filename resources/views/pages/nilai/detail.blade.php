@@ -2,7 +2,7 @@
 @section('judul', 'Data Nilai')
 @section('content')
 <div class="card" style="width: 24rem;">
-    <h2 class="card-header">Nilai ke-{{ $nilai->id }}</h2>
+    <h2 class="card-header">Nilai Id ke-{{ $nilai->id }}</h2>
     <div class="card-body">
         <p><b>Nama siswa:</b> {{ $nilai->siswa->nama_siswa }}<p>
         <p><b>Nilai:</b> {{ $nilai->nilai }}</p>
