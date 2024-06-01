@@ -1,30 +1,38 @@
-## Anggota Kelompok
+## Tentang Project
 
-- ANDIKA ROFIF S. (03)
-- ARGYANTI KHADIJAH (05)
-- DAVILLA AUREL H. (09)
-- DILLON ANDI MARELLA (10)
-- MUHAMMAD SAMSUL MA’ARIF (22) 
-- WAHID SATRIO AJI (31)
+Ini adalah project website penilaian siswa. Di dalamnya, terdapat 3 roles: admin, guru, dan siswa, dengan perincian:
+- seorang admin bisa mengelola data guru, siswa, mata pelajaran, kelas, dan tuple (set) mata pelajaran dengan kelas;
+- seorang guru bisa menambah topik untuk suatu mata pelajaran dalam suatu kelas dan menambah nilai seorang siswa untuk topik tersebut. Semuanya berdasarkan mata pelajaran dan kelas yang ia ajar;
+- seorang siswa hanya bisa melihat nilainya.
+
+
+## Kekurangan
+
+Fitur untuk filtering data yang lebih baik untuk halaman nilai serta bagian untuk lupa password
+
 
 ## Fitur-Fitur
 
-- CRUD data siswa
-- CRUD data guru
-- CRUD data mata pelajaran
-- CRUD data kelas
-- CRUD data tuple mata pelajaran-kelas
-- CRUD data topik
-- CRUD data nilai
+- Login dengan autentikasi (authentication) dan otorisasi (authorization)
+- CRUD aplikasi penilaian siswa, yang meliputi
+    - CRUD data siswa
+    - CRUD data guru
+    - CRUD data mata pelajaran
+    - CRUD data kelas
+    - CRUD data tuple mata pelajaran-kelas
+    - CRUD data topik
+    - CRUD data nilai
 
-## Nilai yang Kami Berikan
-- Mudah
+
+## Nilai yang Kami Tawarkan
+- Kemudahan
 - Praktis
 - Efektif
 - Intuitif
 - User-friendly
 - Aman
 - Fleksibel
+
 
 ## Framework
 

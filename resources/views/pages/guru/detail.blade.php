@@ -6,6 +6,7 @@
     <div class="card-body">
         <p><b>Nama:</b> {{ $guru->name }}<p>
         <p><b>Email:</b> {{ $guru->email }}<p>
+        <p><b>Jenis kelamin:</b> {{ $guru->jenis_kelamin }}<p>
         <b>Mengampu:</b>
         @if($guru->dataMengampu->isEmpty())
             -

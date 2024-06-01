@@ -12,7 +12,7 @@ class Nilai extends Model
     protected $fillable = ["nilai", "id_siswa", "id_topik"];
 
     public function siswa(){
-        return $this->belongsTo(User::class, 'id_siswa');
+        return $this->belongsTo(Siswa::class, 'id_siswa');
     }
 
     public function topik(){

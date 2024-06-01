@@ -5,6 +5,7 @@
     <h3 class="card-header">Siswa Id ke-{{ $siswa->id }}</h3>
     <div class="card-body">
         <p><b>Nama siswa:</b> {{ $siswa->name }}<p>
+        <p><b>Jenis kelamin:</b> {{ $siswa->jenis_kelamin }}<p>
         <p><b>Email:</b> {{ $siswa->email }}<p>
         <p><b>Kelas:</b> {{ $siswa->kelas }}</p>
     </div>

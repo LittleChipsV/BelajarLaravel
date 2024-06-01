@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function(){
     });
 
     Route::resource('nilai', ControllerNilai::class)->only(['index', 'show'])->middleware('can:isSiswaAtauGuru');
+    Route::get('/topik/get/{idMataPelajaran}', [ControllerNilai::class, 'getSemuaTopikByIdMataPelajaran']);
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -8,6 +8,7 @@
             <tr>
                 <th scope="col">No</th>
                 <th scope="col">Nama Siswa</th>
+                <th scope="col">Jenis Kelamin</th>
                 <th scope="col">Email</th>
                 <th scope="col">Kelas</th>
                 <th scope="col">Aksi</th>
@@ -18,6 +19,7 @@
             <tr>
                 <td scope="row">{{ $key + 1 }}</td>
                 <td>{{ $value->name }}</td>
+                <td>{{ $value->jenis_kelamin }}</td>
                 <td>{{ $value->email }}</td>
                 <td>{{ $value->kelas }}</td>
                 <td class="mr-3">
